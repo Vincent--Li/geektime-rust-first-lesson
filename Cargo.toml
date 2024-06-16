@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+  "fib",
+  "first-rust",
+  "mock-chatroom",
+  "testlib"
+]
