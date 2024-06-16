@@ -1,6 +1,24 @@
 use std::fs;
 
 fn main() {
+//    fetch_rust_lang_as_md();
+    println!("square of 25 is {}", apply(25, square));
+    println!("cube of 25 is {}", apply(25, cube));
+}
+
+fn apply(value: i32, f: fn(i32) -> i32) -> i32 {
+    f(value)
+}
+
+fn square(value: i32) -> i32 {
+    value * value
+}
+
+fn cube(value: i32) -> i32 {
+    value * value * value
+}
+
+fn fetch_rust_lang_as_md() {
     let url = "https://www.rust-lang.org/";
     let output = "rust.md";
 
