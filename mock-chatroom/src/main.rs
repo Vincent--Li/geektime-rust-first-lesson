@@ -58,7 +58,6 @@ enum Event<'a> {
     Message((&'a User, &'a Topic, &'a str)),
 }
 
-
 impl Display for User {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "User: ({},{},{})", self.id, self.name, self.gender)
@@ -78,7 +77,9 @@ impl<'a> Display for Event<'a> {
         match *self {
             Event::Join((user, topic)) => write!(f, "({} Join {})", user, topic),
             Event::Leave((user, topic)) => write!(f, "({} Leave {})", user, topic),
-            Event::Message((user, topic, message)) => write!(f, "({} in {} send a message: {})", user, topic, message),
+            Event::Message((user, topic, message)) => {
+                write!(f, "({} in {} send a message: {})", user, topic, message)
+            }
         }
     }
 }
@@ -90,11 +91,25 @@ impl<'a> Event<'a> {
     }
 }
 
+fn process_event(event: &Event) {
+    // 匹配模式可以对 struct, enum做处理
+    match *event {
+        Event::Join(e) => println!("User {} join", e.0),
+        Event::Leave(e) => println!("User {} leave", e.0),
+        _ => println!("===========================\nMessage handled individually\n==========================="),
+    }
+
+    // 可以只关注自己想要的部分
+    if let Event::Message(e) = event {
+        println!("Topic: {}, User {} say {}", e.1, e.0, e.2)
+    }
+}
+
 fn main() {
     let alice = User {
         id: UserId(1),
         name: "Alice".into(),
-        gender: Gender::Female
+        gender: Gender::Female,
     };
     let bob = User {
         id: UserId(2),
@@ -112,6 +127,8 @@ fn main() {
     let event2 = Event::Join((&bob, &topic));
     let event3 = Event::Message((&alice, &topic, "Welcome bob into the rust world".as_ref()));
     let event4 = Event::Leave((&alice, &topic));
-    let event4 = Event::Leave((&alice, &topic));
-    println!("event1: {event1},\nevent2: {event2},\nevent3: {event3},\nevent4: {event4}");
+    process_event(&event1);
+    process_event(&event2);
+    process_event(&event3);
+    process_event(&event4);
 }
