@@ -1,16 +1,12 @@
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use mime::Mime;
 use reqwest::{header, Client, Response, Url};
 use std::{collections::HashMap, str::FromStr};
 use std::{fmt::Display, path::PathBuf};
-use syntect::{
-    easy::HighlightLines,
-    highlighting::{Style, ThemeSet},
-    parsing::SyntaxSet,
-    util::{as_24_bit_terminal_escaped, LinesWithEndings},
-};
+use html_parser::Dom;
+
 
 // 定义 HTTPie 的 CLI 的主入口，它包含若干个子命令
 // 下面 /// 的注释是文档，clap 会将其作为 CLI 的帮助
@@ -127,8 +123,7 @@ async fn main() -> Result<()> {
 
 async fn get(client: Client, args: &Get) -> Result<()> {
     let resp = client.get(&args.url).send().await?;
-    println!("{:?}", resp.text().await?);
-    Ok(())
+    Ok(print_resp(resp).await?)
 }
 
 async fn post(client: Client, args: &Post) -> Result<()> {
@@ -137,8 +132,7 @@ async fn post(client: Client, args: &Post) -> Result<()> {
         body.insert(&pair.k, &pair.v);
     }
     let resp = client.post(&args.url).json(&body).send().await?;
-    println!("{:?}", resp.text().await?);
-    Ok(())
+    Ok(print_resp(resp).await?)
 }
 
 // 打印服务器版本号 + 状态码
@@ -154,11 +148,15 @@ fn print_headers(resp: &Response) {
     print!("\n");
 }
 /// 打印服务器返回的 HTTP body
-fn print_body(m: Option, body: &String) {
+fn print_body(m: Option<Mime>, body: &String) {
+
     match m {
         // 对于 "application/json" 我们 pretty print
         Some(v) if v == mime::APPLICATION_JSON => {
             println!("{}", jsonxf::pretty_print(body).unwrap().cyan())
+        }
+        Some(v) if v == mime::TEXT_HTML => {
+            println!("{}", Dom::parse(body).unwrap().to_json_pretty().unwrap())
         }
         // 其它 mime type，我们就直接输出
         _ => println!("{}", body),
@@ -176,8 +174,10 @@ async fn print_resp(resp: Response) -> Result<()> {
 }
 
 /// 将服务器返回的 content-type 解析成 Mime 类型
-fn get_content_type(resp: &Response) -> Option {
+fn get_content_type(resp: &Response) -> Option<Mime> {
     resp.headers()
         .get(header::CONTENT_TYPE)
-        .map(|v| v.to_str().unwrap().parse().unwrap())
+        .map(|v| v.to_str()
+        .unwrap().parse()
+        .unwrap())
 }

@@ -12,3 +12,5 @@ mime = "0.3" # 处理 mime 类型
 reqwest = { version = "0.12", features = ["json"] } # HTTP 客户端
 tokio = { version = "1", features = ["full"] } # 异步处理库
 syntect = { version = "5"}
+html_parser = "0.7.0"
+
