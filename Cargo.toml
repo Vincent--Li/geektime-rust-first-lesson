@@ -2,7 +2,7 @@
 
 members = [
   "fib",
-  "first-rust",
+  "first-rust", "httpie",
   "mock-chatroom",
   "testlib"
 ]
