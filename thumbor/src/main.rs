@@ -52,7 +52,7 @@ async fn main() {
                 .layer(AddExtensionLayer::new(cache))
                 .into_inner(),
         );
-    print_test_url("https://images.pexels.com/photos/1562477/pexels-photo-1562477.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+    print_test_url("https%3A%2F%2Fres.weread.qq.com%2Fwrepub%2FCB_3300028596_5YiAMC4fo6sz7cb31R3LE3XkBzV58y7b595.jpg");
 
     // 运行 web 服务器
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
