@@ -1,12 +1,11 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use colored::Colorize;
+use html_parser::Dom;
 use mime::Mime;
 use reqwest::{header, Client, Response, Url};
 use std::{collections::HashMap, str::FromStr};
 use std::{fmt::Display, path::PathBuf};
-use html_parser::Dom;
-
 
 // 定义 HTTPie 的 CLI 的主入口，它包含若干个子命令
 // 下面 /// 的注释是文档，clap 会将其作为 CLI 的帮助
@@ -149,7 +148,6 @@ fn print_headers(resp: &Response) {
 }
 /// 打印服务器返回的 HTTP body
 fn print_body(m: Option<Mime>, body: &String) {
-
     match m {
         // 对于 "application/json" 我们 pretty print
         Some(v) if v == mime::APPLICATION_JSON => {
@@ -177,7 +175,5 @@ async fn print_resp(resp: Response) -> Result<()> {
 fn get_content_type(resp: &Response) -> Option<Mime> {
     resp.headers()
         .get(header::CONTENT_TYPE)
-        .map(|v| v.to_str()
-        .unwrap().parse()
-        .unwrap())
+        .map(|v| v.to_str().unwrap().parse().unwrap())
 }
