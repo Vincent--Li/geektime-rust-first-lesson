@@ -5,4 +5,4 @@ members = [
   "first-rust", "httpie",
   "mock-chatroom",
   "testlib"
-]
+, "thumbor"]
