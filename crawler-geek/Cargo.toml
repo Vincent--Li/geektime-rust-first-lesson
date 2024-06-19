@@ -1,0 +1,8 @@
+[package]
+name = "crawler-geek"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thirtyfour = "0.32.0-alpha.2"
+tokio = "1"
