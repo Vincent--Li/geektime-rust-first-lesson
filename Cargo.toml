@@ -3,6 +3,6 @@
 members = [
   "fib",
   "first-rust", "httpie",
-  "mock-chatroom",
+  "mock-chatroom", "queryer",
   "testlib"
 , "thumbor"]
