@@ -1,11 +1,10 @@
-
 use sqlparser::dialect::Dialect;
 
 #[derive(Debug, Default)]
-pub struct MyDialect;
+pub struct TyrDialect;
 
 // 创建自己的 sql 方言。TyrDialect 支持 identifier 可以是简单的 url
-impl Dialect for MyDialect {
+impl Dialect for TyrDialect {
     fn is_identifier_start(&self, ch: char) -> bool {
         ('a'..='z').contains(&ch) || ('A'..='Z').contains(&ch) || ch == '_'
     }
@@ -39,6 +38,6 @@ mod tests {
 
     #[test]
     fn it_works() {
-        assert!(Parser::parse_sql(&MyDialect::default(), &example_sql()).is_ok());
+        assert!(Parser::parse_sql(&TyrDialect::default(), &example_sql()).is_ok());
     }
 }

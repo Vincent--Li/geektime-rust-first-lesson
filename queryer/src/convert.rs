@@ -1,20 +1,9 @@
-use std::sync::Arc;
-
 use anyhow::{anyhow, Result};
-use polars::lazy::dsl::Expr;
+use polars::prelude::*;
 use sqlparser::ast::{
     BinaryOperator as SqlBinaryOperator, Expr as SqlExpr, Offset as SqlOffset, OrderByExpr, Select,
     SelectItem, SetExpr, Statement, TableFactor, TableWithJoins, Value as SqlValue,
 };
-
-
-
-/// 解析出来的 SQL, pub > pub(crate) > 无关键字(即模块内可见)
-/// lifetime 'a necessary time:
-/// 1. when defining a reference in a struct 
-/// 2. in function or method parameters: when takes a reference as argument, you specify the 'a to clarify the relationship between the lifetime of different references.
-/// 3. to ensure borrow checker safety: rust's borrow checker enforces rules to prevent dangling pointers.
-/// 4. for returning references from functions: if a function returns a reference, you must annotate the return type with a lifetime to indicate the lifetime of the returned reference relative to it's input or other variables.
 
 /// 解析出来的 SQL
 pub struct Sql<'a> {
@@ -56,8 +45,8 @@ impl<'a> TryFrom<&'a Statement> for Sql<'a> {
 
                     group_by: _,
                     ..
-                } = match q.body.as_ref() {
-                    SetExpr::Select(statement) => statement.as_ref() ,
+                } = match &q.body {
+                    SetExpr::Select(statement) => statement.as_ref(),
                     _ => return Err(anyhow!("We only support Select Query at the moment")),
                 };
 
@@ -102,17 +91,13 @@ impl TryFrom<Expression> for Expr {
 
     fn try_from(expr: Expression) -> Result<Self, Self::Error> {
         match *expr.0 {
-            SqlExpr::BinaryOp { 
-              left, 
-              op, 
-              right } => 
-              Ok(Expr::BinaryExpr {
-                left: Arc::new(Expression(left).try_into()?),
+            SqlExpr::BinaryOp { left, op, right } => Ok(Expr::BinaryExpr {
+                left: Box::new(Expression(left).try_into()?),
                 op: Operation(op).try_into()?,
-                right: Arc::new(Expression(right).try_into()?),
-              }),
+                right: Box::new(Expression(right).try_into()?),
+            }),
             SqlExpr::Wildcard => Ok(Self::Wildcard),
-            SqlExpr::IsNull(expr) => Ok(is_null(expr)),
+            SqlExpr::IsNull(expr) => Ok(Self::IsNull(Box::new(Expression(expr).try_into()?))),
             SqlExpr::IsNotNull(expr) => Ok(Self::IsNotNull(Box::new(Expression(expr).try_into()?))),
             SqlExpr::Identifier(id) => Ok(Self::Column(Arc::new(id.value))),
             SqlExpr::Value(v) => Ok(Self::Literal(Value(v).try_into()?)),
@@ -263,4 +248,3 @@ mod tests {
         assert_eq!(sql.selection, vec![col("a"), col("b"), col("c")]);
     }
 }
-
