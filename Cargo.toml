@@ -3,6 +3,7 @@
 members = [ "crawler-geek",
   "fib",
   "first-rust", "httpie",
-  "mock-chatroom", "queryer",
-  "testlib"
-, "thumbor"]
+  "mock-chatroom", 
+  "queryer", "queryer-py",
+  "testlib", 
+  "thumbor"]

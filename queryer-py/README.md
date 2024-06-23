@@ -1,0 +1,3 @@
+- 需要安装 maturin工具
+- 执行 maturin develop 进行编译
+- 会生成 pyquery-py 库

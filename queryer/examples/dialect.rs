@@ -12,5 +12,3 @@ fn main() {
     let ast = Parser::parse_sql(&GenericDialect::default(), sql);
     println!("{:#?}", ast);
 }
-
-
