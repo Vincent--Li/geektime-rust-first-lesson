@@ -1,10 +1,11 @@
 use sqlparser::dialect::Dialect;
 
 #[derive(Debug, Default)]
-pub struct TyrDialect;
+pub struct MyDialect;
 
 // 创建自己的 sql 方言。TyrDialect 支持 identifier 可以是简单的 url
-impl Dialect for TyrDialect {
+impl Dialect for MyDialect {
+
     fn is_identifier_start(&self, ch: char) -> bool {
         ('a'..='z').contains(&ch) || ('A'..='Z').contains(&ch) || ch == '_'
     }
@@ -23,11 +24,10 @@ pub fn example_sql() -> String {
     let url = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/latest/owid-covid-latest.csv";
 
     let sql = format!(
-        "SELECT location name, total_cases, new_cases, total_deaths, new_deaths \
+        "SELECT location name, total_cases, new_cases, total_deaths, new_death \
         FROM {} where new_deaths >= 5 ORDER BY new_cases DESC LIMIT 6 OFFSET 5",
         url
     );
-
     sql
 }
 
@@ -38,6 +38,8 @@ mod tests {
 
     #[test]
     fn it_works() {
-        assert!(Parser::parse_sql(&TyrDialect::default(), &example_sql()).is_ok());
+      println!("{:#?}",Parser::parse_sql(&MyDialect::default(), &example_sql()));
+      assert!(Parser::parse_sql(&MyDialect::default(), &example_sql()).is_ok());
+
     }
 }
