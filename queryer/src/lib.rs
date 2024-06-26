@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-mod dialect;
-
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-=======
 use anyhow::{anyhow, Result};
 use polars::prelude::*;
 use sqlparser::parser::Parser;
 use std::ops::{Deref, DerefMut};
 use tracing::info;
->>>>>>> fdd83bae919d6cb51399e7483f8be6bfd137c969
 
 mod convert;
 mod dialect;
@@ -21,7 +13,7 @@ use fetcher::retrieve_data;
 use loader::detect_content;
 
 pub use dialect::example_sql;
-pub use dialect::TyrDialect;
+pub use dialect::MyDialect;
 
 #[derive(Debug)]
 pub struct DataSet(DataFrame);
@@ -54,7 +46,7 @@ impl DataSet {
 
 /// 从 from 中获取数据，从 where 中过滤，最后选取需要返回的列
 pub async fn query<T: AsRef<str>>(sql: T) -> Result<DataSet> {
-    let ast = Parser::parse_sql(&TyrDialect::default(), sql.as_ref())?;
+    let ast = Parser::parse_sql(&MyDialect::default(), sql.as_ref())?;
 
     if ast.len() != 1 {
         return Err(anyhow!("Only support single sql at the moment"));
