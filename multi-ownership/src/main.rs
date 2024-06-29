@@ -37,9 +37,9 @@ fn main() {
 
     let node5 = Node::new(5);
     let node3 = node1.get_downstream().unwrap();
-    node3.borrow_mut().downstream = Some(Rc::new(RefCell::new(node5)));
+    node3.borrow_mut().downstream = Some(Rc::new(RefCell::new(node5))); // 主要就是 borrow_mut() 方法暴露的可变引用
     // node3.borrow_mut().update_downstream(Rc::new(RefCell::new(node5)));
-
+    
     println!("\nnode1: {:?},\nnode2: {:?}", node1, node2);
 
 
