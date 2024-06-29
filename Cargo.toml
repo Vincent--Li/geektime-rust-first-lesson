@@ -2,7 +2,7 @@
 
 members = [ "crawler-geek",
   "fib",
-  "first-rust", "httpie",
+  "first-rust", "httpie", "lifetime",
   "mock-chatroom", "multi-ownership", "ownership", 
   "queryer", "queryer-py",
   "testlib", 
