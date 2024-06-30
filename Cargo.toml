@@ -2,13 +2,17 @@
 
 members = [ "crawler-geek",
   "fib",
-<<<<<<< Updated upstream
-  "first-rust", "httpie", "lifetime", "mem-management",
-  "mock-chatroom", "multi-ownership", "ownership", 
-=======
-  "first-rust", "httpie", "json2excel",
-  "mock-chatroom", "ownership", 
->>>>>>> Stashed changes
-  "queryer", "queryer-py",
+  "httpie", 
+  "lifetime", 
+  "mem-management",
+  "mock-chatroom", 
+  "multi-ownership", 
+  "ownership", 
+  "first-rust", 
+  "httpie", 
+  "json2excel",
+  "mock-chatroom", 
+  "queryer", 
+  "queryer-py",
   "testlib", 
   "thumbor"]

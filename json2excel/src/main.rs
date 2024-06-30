@@ -39,16 +39,18 @@ fn json_to_excel(json: &str, output_file: &str) -> Result<()> {
 fn main() {
     // 创建命令行解析器
     let matches = App::new("JSON to Excel Converter")
-       .version("1.0")
-       .author("Your Name")
-       .about("Converts JSON to Excel")
-       .arg(Arg::with_name("file-path")
-           .short("f")
-           .long("file-path")
-           .value_name("FILE")
-           .help("Specifies the JSON file path")
-           .required(true))
-       .get_matches();
+        .version("1.0")
+        .author("Your Name")
+        .about("Converts JSON to Excel")
+        .arg(
+            Arg::with_name("file-path")
+                .short("f")
+                .long("file-path")
+                .value_name("FILE")
+                .help("Specifies the JSON file path")
+                .required(true),
+        )
+        .get_matches();
 
     // 获取命令行参数
     let file_path = matches.value_of("file-path").unwrap();

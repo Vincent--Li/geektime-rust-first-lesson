@@ -1,4 +1,4 @@
-pub fn strtok<'a>(s: &'a mut & str, delimiter: char) -> &'a str {
+pub fn strtok<'a>(s: &'a mut &str, delimiter: char) -> &'a str {
     if let Some(i) = s.find(delimiter) {
         let prefix = &s[..i];
         let suffix = &s[i + delimiter.len_utf8()..];

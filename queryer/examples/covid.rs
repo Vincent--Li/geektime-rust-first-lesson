@@ -15,7 +15,6 @@ async fn main() -> Result<()> {
     );
     let df1 = query(sql).await?;
     println!("{}", df1.to_csv().unwrap());
-    
+
     Ok(())
 }
-
