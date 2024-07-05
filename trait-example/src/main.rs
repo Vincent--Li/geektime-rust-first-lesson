@@ -1,19 +1,16 @@
-use std::io::Write;
+use std::{io::Write, str::FromStr};
 
 use regex::Regex;
-
-
 
 #[derive(Debug)]
 struct BufBuilder {
     buf: Vec<u8>,
 }
 
-
 impl BufBuilder {
     pub fn new(capacity: usize) -> Self {
         Self {
-            buf: Vec::with_capacity(capacity)
+            buf: Vec::with_capacity(capacity),
         }
     }
 
@@ -34,28 +31,46 @@ impl Write for BufBuilder {
 }
 
 pub trait Parse {
-    fn parse(str: &str) -> Self;
+    type Error;
+    fn parse(str: &str) -> Result<Self, Self::Error>
+    where
+        Self: Sized;
 }
 
-impl Parse for u8 {
-    fn parse(str: &str) -> Self {
-        let re = Regex::new(r"^[0-9]+").unwrap();
+impl<T> Parse for T
+where
+    T: Default + FromStr,
+{
+    type Error = String;
+    fn parse(str: &str) -> Result<Self, Self::Error> {
+        let re = Regex::new(r"^[0-9]+(\.[0-9]+)?").unwrap();
         if let Some(captures) = re.captures(str) {
-            captures.get(0).map_or(0,  |s| s.as_str().parse().unwrap_or(0))
+            captures
+                .get(0)
+                .map_or(Err("failed to capture".to_string()), |a| {
+                    a.as_str()
+                        .parse()
+                        .map_err(|_err| "failed to parse captured string".to_string())
+                })
         } else {
-            0
+            Err("failed to parse string".to_string())
         }
     }
 }
 
 #[test]
 fn parse_should_work() {
-    assert_eq!(u8::parse("123abcd"), 123);
-    assert_eq!(u8::parse("1234abcd"), 0);
-    assert_eq!(u8::parse("abc"), 0);
+    assert_eq!(u32::parse("123abcd"), Ok(123));
+    assert_eq!(
+        u32::parse("123.45abcd"),
+        Err("failed to parse captured string".into())
+    );
+    assert_eq!(f64::parse("123.45abcd"), Ok(123.45));
+    assert!(f64::parse("abcd").is_err());
 }
 
 fn main() {
     let mut buf = BufBuilder::new(1024);
     buf.write_cust();
+    println!("result: {:?}", u8::parse("255 hello world"));
 }
