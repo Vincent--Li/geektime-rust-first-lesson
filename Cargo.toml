@@ -15,4 +15,4 @@ members = [ "crawler-geek",
   "queryer", 
   "queryer-py",
   "testlib", 
-  "thumbor", "type-sys", "trait-example"]
+  "thumbor", "type-sys", "trait-example", "trait-example3"]
