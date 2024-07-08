@@ -15,4 +15,9 @@ members = [ "crawler-geek",
   "queryer", 
   "queryer-py",
   "testlib", 
-  "thumbor", "type-sys", "trait-example", "trait-example3"]
+  "thumbor", 
+  "type-sys", 
+  "trait-example", 
+  "trait-example2", 
+  "trait-example3"]
+
