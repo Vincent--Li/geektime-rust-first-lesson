@@ -19,5 +19,5 @@ members = [ "crawler-geek",
   "type-sys", 
   "trait-example", 
   "trait-example2", 
-  "trait-example3"]
+  "trait-example3", "sentence-iter"]
 
