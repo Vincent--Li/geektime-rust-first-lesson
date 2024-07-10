@@ -595,6 +595,9 @@ dependencies = [
 [[package]]
 name = "common-traits"
 version = "0.1.0"
+dependencies = [
+ "url",
+]
 
 [[package]]
 name = "console_error_panic_hook"

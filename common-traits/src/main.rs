@@ -1,27 +1,34 @@
-#[derive(Clone, Debug)]
-struct Developer {
-    name: String, 
-    age: u8,
-    lang: Language
-}
+use std::borrow::Cow;
 
-#[derive(Clone, Debug)]
-enum Language {
-    Rust,
-    TypeScript,
-    Elixir,
-    Haskell
-}
-
+use url::Url;
 fn main() {
-    let dev = Developer {
-        name: "John".to_string(),
-        age: 30,
-        lang: Language::Rust
-    };
-    // clone 是深拷贝, 栈内存和堆内存一起拷贝, 这也是为什么, 数据结构里的每个字段都需要实现过Clone
-    let dev1 = dev.clone();
-    println!("dev: {:?}, addr of dev name: {:p}", dev, dev.name.as_str());
-    println!("dev1: {:?}, addr of dev1 name: {:p}", dev1, dev1.name.as_str());
+    let url = Url::parse("https://tyr.com/rust?page=1024&sort=desc&extra=hello%20world").unwrap();
+    let mut pairs = url.query_pairs();
+
+    assert_eq!(pairs.count(), 3);
+
+    let (mut k, v) = pairs.next().unwrap();
+    // 因为 k, v 都是 Cow<str> 他们用起来感觉和 &str 或者 String 一样
+    // 此刻，他们都是 Borrowed
+    println!("key: {}, v: {}", k, v);
+    // 当修改发生时，k 变成 Owned
+    k.to_mut().push_str("_lala");
+
+    print_pairs((k, v));
+
+    print_pairs(pairs.next().unwrap());
+    // 在处理 extra=hello%20world 时，value 被处理成 "hello world"
+    // 所以这里 value 是 Owned
+    print_pairs(pairs.next().unwrap());
 }
 
+fn print_pairs(pair: (Cow<str>, Cow<str>)) {
+    println!("key: {}, value: {}", show_cow(pair.0), show_cow(pair.1));
+}
+
+fn show_cow(cow: Cow<str>) -> String {
+    match cow {
+        Cow::Borrowed(v) => format!("Borrowed {}", v),
+        Cow::Owned(v) => format!("Owned {}", v),
+    }
+}
