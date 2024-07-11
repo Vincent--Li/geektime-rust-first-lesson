@@ -1,7 +1,6 @@
 [package]
-name = "common-traits"
+name = "common-trait-cow"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-url = "2.5.2"
