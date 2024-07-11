@@ -21,6 +21,7 @@ fn main() {
         println!("Hello: {}, {:?}, {:?}", x, name2, name3);
     };
 
+    // 闭包的大小跟参数, 局部变量都无关, 只跟捕获的变量有关
     println!(
         "c1: {}, c2: {}, c3: {}, c4: {}, c5: {}, main: {}",
         size_of_val(&c1),
