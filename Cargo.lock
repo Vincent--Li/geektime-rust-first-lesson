@@ -920,6 +920,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "from-into"
+version = "0.1.0"
+
+[[package]]
 name = "futf"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
