@@ -19,5 +19,5 @@ members = [ "crawler-geek",
   "type-sys", 
   "trait-example", 
   "trait-example2", 
-  "trait-example3", "sentence-iter", "common-traits", "from-into", "common-trait-cow", "iterator", "closure-1", "closure-fnonece", "closure-fnmut", "bytes-example"]
+  "trait-example3", "sentence-iter", "common-traits", "from-into", "common-trait-cow", "iterator", "closure-1", "closure-fnonece", "closure-fnmut", "bytes-example", "kv-server"]
 
