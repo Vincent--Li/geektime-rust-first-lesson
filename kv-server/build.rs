@@ -1,7 +1,10 @@
 use std::process::Command;
 
 fn main() {
-    prost_build::Config::new()
+    let mut config = prost_build::Config::new();
+    config.bytes(&["."]);
+    config.type_attribute(".", "#[derive(PartialOrd)]");
+    config
         .out_dir("src/pb")
         .compile_protos(&["abi.proto"], &["."])
         .unwrap();
@@ -9,4 +12,7 @@ fn main() {
         .args(&["fmt", "--", "src/*.rs"])
         .status()
         .expect("cargo fmt failed");
+
+    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=abi.proto");
 }
