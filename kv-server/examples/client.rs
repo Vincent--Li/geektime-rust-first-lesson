@@ -26,5 +26,12 @@ async fn main() -> Result<()> {
         info!("Got response {:?}", data);
     }
 
+    // 生成一个 HGETall 命令
+    let cmd = CommandRequest::new_hgetall("table1");
+    client.send(cmd).await?;
+    if let Some(Ok(data)) = client.next().await {
+        info!("Got response {:?}", data);
+    }
+
     Ok(())
 }

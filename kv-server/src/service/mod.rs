@@ -6,13 +6,13 @@ use tracing::debug;
 
 mod command_service;
 
-/// 对 Command 的处理的抽象
+/// 对 Command 的处理的抽象, 放在mod中. 真正的实现藏起来
 pub trait CommandService {
     /// 处理 Command，返回 Response
     fn execute(self, store: &impl Storage) -> CommandResponse;
 }
 
-/// Service 数据结构
+/// Service 数据结构, Rust 惯例. 多线程下clone的主体和其内部接口分开. 这样代码逻辑更加清晰
 pub struct Service<Store = MemTable> {
     inner: Arc<ServiceInner<Store>>,
 }
@@ -40,6 +40,7 @@ impl<Store: Storage> Service<Store> {
     pub fn execute(&self, cmd: CommandRequest) -> CommandResponse {
         debug!("Got request: {:?}", cmd);
         // TODO: 发送 on_received 事件
+        // SRP (Single Responsibility Principle)
         let res = dispatch(cmd, &self.inner.store);
         debug!("Executed response: {:?}", res);
         // TODO: 发送 on_executed 事件
