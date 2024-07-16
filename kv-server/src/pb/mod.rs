@@ -114,3 +114,16 @@ impl From<KvError> for CommandResponse {
         result
     }
 }
+
+/// 从bool 转换成 CommandResponse
+impl From<bool> for CommandResponse {
+    fn from(b: bool) -> Self {
+        Self {
+            status: StatusCode::OK.as_u16() as _,
+            values: vec![Value {
+                value: Some(value::Value::Bool(b)),
+            }],
+            ..Default::default()
+        }
+    }
+}
