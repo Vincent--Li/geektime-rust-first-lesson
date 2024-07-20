@@ -1,3 +1,5 @@
+use std::io::BufReader;
+
 use anyhow::Result;
 use async_prost::AsyncProstStream;
 use futures::prelude::*;

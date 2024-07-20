@@ -127,3 +127,14 @@ impl From<bool> for CommandResponse {
         }
     }
 }
+
+/// 从Value 转换成 CommandResponse
+impl From<Vec<Value>> for CommandResponse {
+    fn from(v: Vec<Value>) -> Self {
+        Self {
+            status: StatusCode::OK.as_u16() as _,
+            values: v,
+            ..Default::default()
+        }
+    }
+}
