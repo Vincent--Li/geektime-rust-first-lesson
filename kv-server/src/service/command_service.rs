@@ -54,12 +54,12 @@ impl CommandService for Hexist {
 impl CommandService for Hmget {
     fn execute(self, store: &impl Storage) -> CommandResponse {
         let mut kv_paris: Vec<Value> = vec![];
-        self.keys.iter().for_each(|key| {
-            match store.get(&self.table, key) {
+        self.keys
+            .iter()
+            .for_each(|key| match store.get(&self.table, key) {
                 Ok(Some(v)) => kv_paris.push(v),
                 _ => println!("key not found"),
-            }
-        });
+            });
         kv_paris.into()
     }
 }
@@ -69,11 +69,10 @@ impl CommandService for Hmset {
         let mut result = vec![];
         self.pairs.iter().for_each(|pair| {
             match store.set(&self.table, pair.key.clone(), pair.value.clone().unwrap()) {
-                Ok(Some(v)) => result.push(
-                    Kvpair { 
-                        key: pair.key.clone(), 
-                        value: pair.value.clone(),
-                    }),
+                Ok(Some(v)) => result.push(Kvpair {
+                    key: pair.key.clone(),
+                    value: pair.value.clone(),
+                }),
                 _ => println!("key not found"),
             }
         });
