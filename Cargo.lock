@@ -651,6 +651,9 @@ version = "0.1.0"
 [[package]]
 name = "concurrency-in-memory-metric"
 version = "0.1.0"
+dependencies = [
+ "lazy_static",
+]
 
 [[package]]
 name = "console_error_panic_hook"
