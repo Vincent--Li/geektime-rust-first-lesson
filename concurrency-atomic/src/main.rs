@@ -39,7 +39,10 @@ impl<T> Lock<T> {
             .locked
             .compare_exchange(false, true, Ordering::Acquire, Ordering::Relaxed)
             .is_err()
-        {} // **1
+        {
+            // 性能优化：compare_exchange 需要独占访问，当拿不到锁时，我们 // 先不停检测 locked 的状态，直到其 unlocked 后，再尝试拿锁 
+            while self.locked.load(Ordering::Relaxed) == true {}
+        } // **1
 
         // 已经拿到并加锁，开始干活
         op(&mut self.data.borrow_mut()); // **3
@@ -54,15 +57,32 @@ fn main() {
 
     let data1 = data.clone();
     let t1 = thread::spawn(move || {
-        data1.lock(|v| *v += 10);
+        println!("data1 locked");
+        data1.lock(|v| *v += 1<<1);
     });
 
     let data2 = data.clone();
     let t2 = thread::spawn(move || {
-        data2.lock(|v| *v *= 10);
+        println!("data2 locked");
+        data2.lock(|v| *v += 1<<1);
     });
-    t1.join().unwrap();
+
+    let data3 = data.clone();
+    let t3 = thread::spawn(move || {
+        println!("data3 locked");
+        data3.lock(|v| *v += 1<<1);
+    });
+
+    let data4 = data.clone();
+    let t4 = thread::spawn(move || {
+        println!("data4 locked");
+        data4.lock(|v| *v += 1<<1);
+    });
+    
+    t4.join().unwrap();
+    t3.join().unwrap();
     t2.join().unwrap();
+    t1.join().unwrap();
 
     println!("data: {:?}", data);
 }
