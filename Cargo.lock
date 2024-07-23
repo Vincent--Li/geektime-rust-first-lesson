@@ -649,6 +649,10 @@ name = "concurrency-atomic"
 version = "0.1.0"
 
 [[package]]
+name = "concurrency-channel"
+version = "0.1.0"
+
+[[package]]
 name = "concurrency-condvar"
 version = "0.1.0"
 
