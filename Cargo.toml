@@ -18,5 +18,5 @@ members = [ "crawler-geek",
   "type-sys", 
   "trait-example", 
   "trait-example2", 
-  "trait-example3", "sentence-iter", "common-traits", "from-into", "common-trait-cow", "iterator", "closure-1", "closure-fnonece", "closure-fnmut", "bytes-example", "kv-server", "rgrep", "traitobject", "unsafe-evil", "unsafe-const", "unsafe-mutex", "bzlib-sys", "concurrency-atomic", "concurrency-in-memory-metric", "concurrency-condvar", "concurrency-channel"]
+  "trait-example3", "sentence-iter", "common-traits", "from-into", "common-trait-cow", "iterator", "closure-1", "closure-fnonece", "closure-fnmut", "bytes-example", "kv-server", "rgrep", "traitobject", "unsafe-evil", "unsafe-const", "unsafe-mutex", "bzlib-sys", "concurrency-atomic", "concurrency-mutex","concurrency-in-memory-metric", "concurrency-condvar", "concurrency-channel"]
 
