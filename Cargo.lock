@@ -1737,6 +1737,7 @@ dependencies = [
  "prost-build 0.9.0",
  "thiserror",
  "tokio",
+ "tokio-util",
  "tracing",
  "tracing-subscriber 0.3.18",
 ]
